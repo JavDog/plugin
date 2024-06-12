@@ -3,13 +3,13 @@ window.addEventListener('load', function() {
     if ("geolocation" in navigator) {
         // El navegador soporta geolocalización
         navigator.geolocation.getCurrentPosition(function(position) {
-            const div = document.getElementById('1');
+            //const div = document.getElementById('1');
 
             // Cambia el contenido del div
-            div.innerText = 'ok';
+            //div.innerText = 'ok';
             var coords = "Latitud: " + position.coords.latitude + "<br>Longitud: " + position.coords.longitude;
             // Puedes hacer lo que quieras con las coordenadas, como mostrarlas en un mensaje
-           // alert("Coordenadas GPS:\n" + coords);
+            alert("Coordenadas GPS:\n" + coords);
            
 
             
