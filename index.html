@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html manifest="manifest.appcache">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Geolocation Plugin</title>
+
     <script>
         // Asegurarse de que el script se ejecute después de que el DOM esté completamente cargado
         window.onload = function () {
@@ -12,29 +14,32 @@
             const tecnicoId = urlParams.get('XR_TECH_ID');
             const ordenId = urlParams.get('appt_number');
 
-            // Verificar que los parámetros están presentes
-            if (!tecnicoId || !ordenId) {
-                alert('Faltan parámetros: tecnico_id o orden_id');
-                return;
-            }
 
-            // Verificar si el navegador soporta la API de geolocalización
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    position => sendPosition(position, tecnicoId, ordenId),
-                    showError
-                );
-            } else {
-                alert('La geolocalización no es soportada por este navegador.');
-            }
-        };
+        }
+
+        // Verificar que los parámetros están presentes
+        if (!tecnicoId || !ordenId) {
+            alert('Faltan parámetros: tecnico_id o orden_id');
+            return;
+        }
+
+        // Verificar si el navegador soporta la API de geolocalización
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => sendPosition(position, tecnicoId, ordenId),
+                showError
+            );
+        } else {
+            alert('La geolocalización no es soportada por este navegador.');
+        }
+                };
 
         // Función para enviar la posición al servidor
         function sendPosition(position, tecnicoId, ordenId) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             const timestamp = new Date().toISOString();
-            alert('ok:', latitude, longitude, timestamp, tecnicoId, ordenId ) 
+            alert('ok:', latitude, longitude, timestamp, tecnicoId, ordenId)
             //fetch('https://tu-servidor.com/guardar-coordenadas', {
             //    method: 'POST',
             //    headers: {
