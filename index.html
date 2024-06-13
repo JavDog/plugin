@@ -6,7 +6,6 @@
     <title>Geolocation Plugin</title>
 </head>
 <body>
-    <h1>Geolocation Plugin for Oracle Field Service</h1>
     <button id="getLocationButton">Get Location</button>
 
     <script>
@@ -23,22 +22,6 @@
             const longitude = position.coords.longitude;
             alert('Latitude: ' + latitude + '\nLongitude: ' + longitude);
             // Aquí puedes enviar las coordenadas a tu servidor o realizar otra acción.
-            // Por ejemplo, enviarlas a un endpoint con una petición AJAX:
-            /*
-            fetch('https://tu-servidor.com/guardar-coordenadas', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                latitude: latitude,
-                longitude: longitude
-              })
-            })
-            .then(response => response.json())
-            .then(data => console.log('Success:', data))
-            .catch(error => console.error('Error:', error));
-            */
         }
 
         function showError(error) {
