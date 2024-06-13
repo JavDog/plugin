@@ -2,13 +2,48 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ejemplo de Botón de Geolocalización</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejecutar Geolocalización</title>
+    <!-- Metaetiqueta para configurar la política de permisos -->
+    <meta name="permissions-policy" content="geolocation=(self 'https://plugintoacoordenada.netlify.app/')">
 </head>
 <body>
-    <h1>Botón de Geolocalización</h1>
+    <h1>Ejecutar Geolocalización</h1>
     <button id="getLocationButton">Obtener Ubicación</button>
-    <iframe id="miIframe" src="iframe.html"></iframe>
-    <script src="script.js"></script>
+
+    <script>
+        document.getElementById('getLocationButton').addEventListener('click', function () {
+            if ("geolocation" in navigator) {
+                // El navegador soporta geolocalización, solicitar permiso al usuario
+                navigator.permissions.query({ name: 'geolocation' }).then(function (permissionStatus) {
+                    if (permissionStatus.state === 'granted') {
+                        // Permiso concedido, obtener la ubicación
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            var coords = "Latitud: " + position.coords.latitude + "<br>Longitud: " + position.coords.longitude;
+                            alert("Coordenadas GPS:\n" + coords);
+                        }, function (error) {
+                            console.error('Error obteniendo la ubicación:', error);
+                            alert('Error obteniendo la ubicación: ' + error.message);
+                        });
+                    } else if (permissionStatus.state === 'prompt') {
+                        // El usuario aún no ha respondido, se puede solicitar explícitamente
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            var coords = "Latitud: " + position.coords.latitude + "<br>Longitud: " + position.coords.longitude;
+                            alert("Coordenadas GPS:\n" + coords);
+                        }, function (error) {
+                            console.error('Error obteniendo la ubicación:', error);
+                            alert('Error obteniendo la ubicación: ' + error.message);
+                        });
+                    } else {
+                        // Permiso denegado por el usuario
+                        alert("El permiso de geolocalización ha sido denegado.");
+                    }
+                });
+            } else {
+                // El navegador no soporta geolocalización
+                alert("Lo siento, tu navegador no soporta geolocalización.");
+            }
+        });
+    </script>
 </body>
 </html>
