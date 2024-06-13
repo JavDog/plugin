@@ -1,7 +1,62 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation Plugin</title>
+</head>
 <body>
-    <div id="1"></div>
-    <script src="Script.js"></script>
+    <h1>Geolocation Plugin for Oracle Field Service</h1>
+    <button id="getLocationButton">Get Location</button>
+
+    <script>
+        document.getElementById('getLocationButton').addEventListener('click', function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        });
+
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            alert('Latitude: ' + latitude + '\nLongitude: ' + longitude);
+            // Aquí puedes enviar las coordenadas a tu servidor o realizar otra acción.
+            // Por ejemplo, enviarlas a un endpoint con una petición AJAX:
+            /*
+            fetch('https://tu-servidor.com/guardar-coordenadas', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                latitude: latitude,
+                longitude: longitude
+              })
+            })
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch(error => console.error('Error:', error));
+            */
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert('User denied the request for Geolocation.');
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert('Location information is unavailable.');
+                    break;
+                case error.TIMEOUT:
+                    alert('The request to get user location timed out.');
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert('An unknown error occurred.');
+                    break;
+            }
+        }
+    </script>
 </body>
 </html>
