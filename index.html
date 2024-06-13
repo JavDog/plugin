@@ -1,49 +1,27 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejecutar Geolocalización</title>
-    <!-- Metaetiqueta para configurar la política de permisos -->
-    <meta name="permissions-policy" content="geolocation=(self 'https://plugintoacoordenada.netlify.app/')">
+    <title>Obtener Coordenadas</title>
 </head>
 <body>
-    <h1>Ejecutar Geolocalización</h1>
-    <button id="getLocationButton">Obtener Ubicación</button>
+    <h1>Obtener Coordenadas</h1>
+
+    <button onclick="obtenerCoordenadas()">Obtener Coordenadas</button>
 
     <script>
-        document.getElementById('getLocationButton').addEventListener('click', function () {
-            if ("geolocation" in navigator) {
-                // El navegador soporta geolocalización, solicitar permiso al usuario
-                navigator.permissions.query({ name: 'geolocation' }).then(function (permissionStatus) {
-                    if (permissionStatus.state === 'granted') {
-                        // Permiso concedido, obtener la ubicación
-                        navigator.geolocation.getCurrentPosition(function (position) {
-                            var coords = "Latitud: " + position.coords.latitude + "<br>Longitud: " + position.coords.longitude;
-                            alert("Coordenadas GPS:\n" + coords);
-                        }, function (error) {
-                            console.error('Error obteniendo la ubicación:', error);
-                            alert('Error obteniendo la ubicación: ' + error.message);
-                        });
-                    } else if (permissionStatus.state === 'prompt') {
-                        // El usuario aún no ha respondido, se puede solicitar explícitamente
-                        navigator.geolocation.getCurrentPosition(function (position) {
-                            var coords = "Latitud: " + position.coords.latitude + "<br>Longitud: " + position.coords.longitude;
-                            alert("Coordenadas GPS:\n" + coords);
-                        }, function (error) {
-                            console.error('Error obteniendo la ubicación:', error);
-                            alert('Error obteniendo la ubicación: ' + error.message);
-                        });
-                    } else {
-                        // Permiso denegado por el usuario
-                        alert("El permiso de geolocalización ha sido denegado.");
-                    }
+        function obtenerCoordenadas() {
+            fetch('http://localhost:3000/obtener-coordenadas')
+                .then(response => response.json())
+                .then(data => {
+                    alert(`Coordenadas obtenidas:\nLatitud: ${data.latitude}\nLongitud: ${data.longitude}`);
+                })
+                .catch(error => {
+                    console.error('Error obteniendo coordenadas:', error);
+                    alert('Error obteniendo coordenadas. Verifica que la API esté disponible.');
                 });
-            } else {
-                // El navegador no soporta geolocalización
-                alert("Lo siento, tu navegador no soporta geolocalización.");
-            }
-        });
+        }
     </script>
 </body>
 </html>
