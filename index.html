@@ -10,11 +10,19 @@
 
     <script>
         document.getElementById('getLocationButton').addEventListener('click', function () {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                alert('Geolocation is not supported by this browser.');
-            }
+            // Verificar el estado del permiso de geolocalización
+            navigator.permissions.query({ name: 'geolocation' }).then(function (permissionStatus) {
+                if (permissionStatus.state === 'granted') {
+                    // Permiso concedido, obtener la posición
+                    navigator.geolocation.getCurrentPosition(showPosition, showError);
+                } else if (permissionStatus.state === 'prompt') {
+                    // Permiso aún no concedido, mostrar mensaje de solicitud
+                    navigator.geolocation.getCurrentPosition(showPosition, showError);
+                } else if (permissionStatus.state === 'denied') {
+                    // Permiso denegado por el usuario
+                    alert('Geolocation permission has been denied.');
+                }
+            });
         });
 
         function showPosition(position) {
