@@ -1,18 +1,13 @@
-window.addEventListener('load', function () {
-    // Este código se ejecutará cuando la página se haya cargado completamente
-    if ("geolocation" in navigator) {
-        // El navegador soporta geolocalización
-        navigator.geolocation.getCurrentPosition(function (position) {
-            var coords = "Latitud: " + position.coords.latitude + "<br>Longitud: " + position.coords.longitude;
-            // Puedes hacer lo que quieras con las coordenadas, como mostrarlas en un mensaje
-            alert("Coordenadas GPS:\n" + coords);
-        }, function (error) {
-            // Manejar errores
-            console.error('Error obteniendo la ubicación:', error);
+document.getElementById('getLocationButton').addEventListener('click', function() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            var locationData = { latitude: latitude, longitude: longitude };
+            var iframe = document.getElementById('miIframe').contentWindow;
+            iframe.postMessage(locationData, '*');
         });
     } else {
-        // El navegador no soporta geolocalización
-        alert("Lo siento, tu navegador no soporta geolocalización.");
+        console.error("La geolocalización no está soportada por este navegador.");
     }
 });
-
