@@ -34,28 +34,28 @@
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             const timestamp = new Date().toISOString();
-
-            fetch('https://tu-servidor.com/guardar-coordenadas', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    tecnico_id: tecnicoId,
-                    orden_id: ordenId,
-                    latitude: latitude,
-                    longitude: longitude,
-                    timestamp: timestamp
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    alert('Coordenadas enviadas con éxito:\nLatitud: ' + latitude + '\nLongitud: ' + longitude);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Hubo un error al enviar las coordenadas.');
-                });
+            alert('ok:', latitude, longitude, timestamp, tecnicoId, ordenId ) 
+            //fetch('https://tu-servidor.com/guardar-coordenadas', {
+            //    method: 'POST',
+            //    headers: {
+            //        'Content-Type': 'application/json'
+            //    },
+            //    body: JSON.stringify({
+            //        tecnico_id: tecnicoId,
+            //        orden_id: ordenId,
+            //        latitude: latitude,
+            //        longitude: longitude,
+            //        timestamp: timestamp
+            //    })
+            //})
+            //    .then(response => response.json())
+            //    .then(data => {
+            //        alert('Coordenadas enviadas con éxito:\nLatitud: ' + latitude + '\nLongitud: ' + longitude);
+            //    })
+            //    .catch(error => {
+            //        console.error('Error:', error);
+            //        alert('Hubo un error al enviar las coordenadas.');
+            //    });
         }
 
         // Función para mostrar errores
