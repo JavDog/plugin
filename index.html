@@ -5,17 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geolocation Plugin</title>
     <script>
+        // Asegurarse de que el script se ejecute después de que el DOM esté completamente cargado
         window.onload = function () {
+            // Obtener los parámetros tecnico_id y orden_id de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const tecnicoId = urlParams.get('XR_TECH_ID');
+            const ordenId = urlParams.get('appt_number');
+
+            // Verificar que los parámetros están presentes
+            if (!tecnicoId || !ordenId) {
+                alert('Faltan parámetros: tecnico_id o orden_id');
+                return;
+            }
+
+            // Verificar si el navegador soporta la API de geolocalización
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(sendPosition, showError);
+                navigator.geolocation.getCurrentPosition(
+                    position => sendPosition(position, tecnicoId, ordenId),
+                    showError
+                );
             } else {
-                alert('Geolocation is not supported by this browser.');
+                alert('La geolocalización no es soportada por este navegador.');
             }
         };
 
-        function sendPosition(position) {
+        // Función para enviar la posición al servidor
+        function sendPosition(position, tecnicoId, ordenId) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
+            const timestamp = new Date().toISOString();
 
             fetch('https://tu-servidor.com/guardar-coordenadas', {
                 method: 'POST',
@@ -23,34 +41,43 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    tecnico_id: tecnicoId,
+                    orden_id: ordenId,
                     latitude: latitude,
-                    longitude: longitude
+                    longitude: longitude,
+                    timestamp: timestamp
                 })
             })
                 .then(response => response.json())
-                .then(data => console.log('Success:', data))
-                .catch(error => console.error('Error:', error));
+                .then(data => {
+                    alert('Coordenadas enviadas con éxito:\nLatitud: ' + latitude + '\nLongitud: ' + longitude);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Hubo un error al enviar las coordenadas.');
+                });
         }
 
+        // Función para mostrar errores
         function showError(error) {
             switch (error.code) {
                 case error.PERMISSION_DENIED:
-                    alert('User denied the request for Geolocation.');
+                    alert('El usuario denegó la solicitud de geolocalización.');
                     break;
                 case error.POSITION_UNAVAILABLE:
-                    alert('Location information is unavailable.');
+                    alert('La información de ubicación no está disponible.');
                     break;
                 case error.TIMEOUT:
-                    alert('The request to get user location timed out.');
+                    alert('La solicitud para obtener la ubicación del usuario ha expirado.');
                     break;
                 case error.UNKNOWN_ERROR:
-                    alert('An unknown error occurred.');
+                    alert('Ocurrió un error desconocido.');
                     break;
             }
         }
     </script>
 </head>
 <body>
-    <h1>Capturing Geolocation...</h1>
+    <h1>Capturando Geolocalización...</h1>
 </body>
 </html>
