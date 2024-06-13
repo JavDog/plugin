@@ -1,6 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejecutar Geolocalización</title>
+</head>
 <body>
-    <script src="Script.js"></script>
+    <h1>Ejecutar Geolocalización</h1>
+    <button id="getLocationButton">Obtener Ubicación</button>
+
+    <script>
+        document.getElementById('getLocationButton').addEventListener('click', function () {
+            if ("geolocation" in navigator) {
+                // El navegador soporta geolocalización
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var coords = "Latitud: " + position.coords.latitude + "<br>Longitud: " + position.coords.longitude;
+                    // Puedes hacer lo que quieras con las coordenadas, como mostrarlas en un mensaje
+                    alert("Coordenadas GPS:\n" + coords);
+                }, function (error) {
+                    // Manejar errores
+                    console.error('Error obteniendo la ubicación:', error);
+                    alert('Error obteniendo la ubicación: ' + error.message);
+                });
+            } else {
+                // El navegador no soporta geolocalización
+                alert("Lo siento, tu navegador no soporta geolocalización.");
+            }
+        });
+    </script>
 </body>
 </html>
