@@ -12,7 +12,7 @@
 
     <script>
         function obtenerCoordenadas() {
-            fetch('https://plugintoacoordenada.netlify.app/.netlify/functions/obtener-coordenadas')
+            fetch('https://plugintoacoordenada.netlify.app/.netlify/functions/obtenerCoordenadas')
                 .then(response => response.json())
                 .then(data => {
                     alert(`Coordenadas obtenidas:\nLatitud: ${data.latitude}\nLongitud: ${data.longitude}`);
