@@ -1,53 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geolocation Plugin</title>
-</head>
+<html lang="es">
 <body>
-    <button id="getLocationButton">Get Location</button>
-
-    <script>
-        document.getElementById('getLocationButton').addEventListener('click', function () {
-            // Verificar el estado del permiso de geolocalización
-            navigator.permissions.query({ name: 'geolocation' }).then(function (permissionStatus) {
-                if (permissionStatus.state === 'granted') {
-                    // Permiso concedido, obtener la posición
-                    navigator.geolocation.getCurrentPosition(showPosition, showError);
-                } else if (permissionStatus.state === 'prompt') {
-                    // Permiso aún no concedido, mostrar mensaje de solicitud
-                    navigator.geolocation.getCurrentPosition(showPosition, showError);
-                } else if (permissionStatus.state === 'denied') {
-                    // Permiso denegado por el usuario
-                    alert('Geolocation permission has been denied.');
-                }
-            });
-        });
-
-        function showPosition(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            alert('Latitude: ' + latitude + '\nLongitude: ' + longitude);
-            // Aquí puedes enviar las coordenadas a tu servidor o realizar otra acción.
-        }
-
-        function showError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    alert('User denied the request for Geolocation.');
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert('Location information is unavailable.');
-                    break;
-                case error.TIMEOUT:
-                    alert('The request to get user location timed out.');
-                    break;
-                case error.UNKNOWN_ERROR:
-                    alert('An unknown error occurred.');
-                    break;
-            }
-        }
-    </script>
+    <div id="1"></div>
+    <script src="Script.js"></script>
 </body>
 </html>
