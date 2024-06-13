@@ -1,88 +1,21 @@
 <!DOCTYPE html>
-<html manifest="manifest.appcache">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geolocation Plugin</title>
-
-    <script>
-        // Asegurarse de que el script se ejecute después de que el DOM esté completamente cargado
-        window.onload = function () {
-            // Obtener los parámetros tecnico_id y orden_id de la URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const tecnicoId = urlParams.get('XR_TECH_ID');
-            const ordenId = urlParams.get('appt_number');
-
-
-        }
-
-        // Verificar que los parámetros están presentes
-        if (!tecnicoId || !ordenId) {
-            alert('Faltan parámetros: tecnico_id o orden_id');
-            return;
-        }
-
-        // Verificar si el navegador soporta la API de geolocalización
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                position => sendPosition(position, tecnicoId, ordenId),
-                showError
-            );
-        } else {
-            alert('La geolocalización no es soportada por este navegador.');
-        }
-                };
-
-        // Función para enviar la posición al servidor
-        function sendPosition(position, tecnicoId, ordenId) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            const timestamp = new Date().toISOString();
-            alert('ok:', latitude, longitude, timestamp, tecnicoId, ordenId)
-            //fetch('https://tu-servidor.com/guardar-coordenadas', {
-            //    method: 'POST',
-            //    headers: {
-            //        'Content-Type': 'application/json'
-            //    },
-            //    body: JSON.stringify({
-            //        tecnico_id: tecnicoId,
-            //        orden_id: ordenId,
-            //        latitude: latitude,
-            //        longitude: longitude,
-            //        timestamp: timestamp
-            //    })
-            //})
-            //    .then(response => response.json())
-            //    .then(data => {
-            //        alert('Coordenadas enviadas con éxito:\nLatitud: ' + latitude + '\nLongitud: ' + longitude);
-            //    })
-            //    .catch(error => {
-            //        console.error('Error:', error);
-            //        alert('Hubo un error al enviar las coordenadas.');
-            //    });
-        }
-
-        // Función para mostrar errores
-        function showError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    alert('El usuario denegó la solicitud de geolocalización.');
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert('La información de ubicación no está disponible.');
-                    break;
-                case error.TIMEOUT:
-                    alert('La solicitud para obtener la ubicación del usuario ha expirado.');
-                    break;
-                case error.UNKNOWN_ERROR:
-                    alert('Ocurrió un error desconocido.');
-                    break;
-            }
-        }
-    </script>
+    <script src="plugin.js" defer></script>
 </head>
 <body>
     <h1>Capturando Geolocalización...</h1>
+    <button id="captureButton">Capturar Coordenadas</button>
+    <pre id="message_body"></pre>
+    <input type="text" id="message_body2" hidden>
+    <input type="text" id="actuacionCodigo" hidden>
+    <input type="text" id="tipoAcceso" hidden>
+    <input type="text" id="ani" hidden>
+    <input type="text" id="aid" hidden>
+    <input type="text" id="subtipoCliente" hidden>
+    <div id="error"></div>
 </body>
 </html>
