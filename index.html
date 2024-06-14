@@ -11,7 +11,7 @@
 
     <script>
         function obtenerValorAid() {
-            const backUrl = decodeURIComponent(getParameterByName('backUrl'));
+            const backUrl = decodeURIComponent(getParameterByName('aid'));
             const aidValue = getAidFromUrl(backUrl);
            // alert(`Valor de aid obtenido: ${aidValue}`);
             console.log('Valor de aid:', aidValue);
@@ -39,7 +39,7 @@
 
                         // Obtener los parámetros de la URL
                         const backURL = getParameterByName('backUrl');
-                        const aidValue = obtenerValorAid() ;
+                        const aidValue = getParameterByName('aid');
 
                         // Mostrar los datos en un alert
                         alert(`Datos obtenidos:
