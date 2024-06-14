@@ -16,10 +16,10 @@
           position => {
             const { latitude, longitude } = position.coords;
             const timestamp = new Date().toISOString();
-            const nombre = getParameterByName('Usuario');
-            const recursoPrincipalId = getParameterByName('Recurso principal');
+           // const nombre = getParameterByName('Usuario');
+           // const recursoPrincipalId = getParameterByName('Recurso principal');
             const backURL = decodeURIComponent(getParameterByName('backUrl'));
-
+            const aidValue = getParameterByName2(backURL, 'aid');// Obtener el valor de 'aid'
             // Crear el objeto de datos
             const data = {
                 latitude,
@@ -43,10 +43,16 @@
         alert('La geolocalización no está soportada en este navegador.');
       }
     }
-
+   
     function getParameterByName(name) {
-      const url = new URL(window.location.href);
-      return url.searchParams.get(name);
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name);
+    }
+    function getParameterByName2(url, name) {
+        name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(url);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' ')); 
     }
     </script>
 </body>
