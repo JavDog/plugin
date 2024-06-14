@@ -10,54 +10,56 @@
     <button onclick="obtenerCoordenadas()">Obtener Coordenadas</button>
 
     <script>
-    function getParameterByName(name) {
-        const url = new URL(window.location.href);
-        return url.searchParams.get(name);
-    }
-
-    function getcitaid(url, name) {
-        name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(url);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    }
-
-    function obtenerCoordenadas() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    const { latitude, longitude } = position.coords;
-                    const timestamp = new Date().toISOString();
-
-                    // Obtener los parámetros de la URL
-                    const backURL = (getParameterByName('backUrl'));
-                    const aidValue = getcitaid(getParameterByName('backUrl'), 'aid');
-
-                    // Mostrar los datos en un alert
-                    alert(`Datos obtenidos:
-                        \nLatitud: ${latitude}
-                        \nLongitud: ${longitude}
-                        \nTimestamp: ${timestamp}
-                        \nbackURL: ${backURL}
-                        \nID de cita: ${aidValue}`);
-
-                    console.log('Datos obtenidos:', {
-                        latitude,
-                        longitude,
-                        timestamp,
-                        aidValue,
-                        backURL
-                    });
-                },
-                error => {
-                    console.error('Error obteniendo la ubicación:', error);
-                    alert('Error obteniendo la ubicación. Verifica los permisos de geolocalización.');
-                }
-            );
-        } else {
-            alert('La geolocalización no está soportada en este navegador.');
+        function obtenerValorAid() {
+            const backUrl = decodeURIComponent(getParameterByName('backUrl'));
+            const aidValue = getAidFromUrl(backUrl);
+           // alert(`Valor de aid obtenido: ${aidValue}`);
+            console.log('Valor de aid:', aidValue);
+            return(aidValue)
         }
-    }
+
+        function getAidFromUrl(url) {
+            const urlParams = new URLSearchParams(url.split('?')[1]); // Divide la URL y toma solo los parámetros de consulta
+            return urlParams.get('aid');
+        }
+
+
+        function getParameterByName(name) {
+            const url = new URL(window.location.href);
+            console.log(url)
+            return url.searchParams.get(name);
+        }
+
+        function obtenerCoordenadas() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        const { latitude, longitude } = position.coords;
+                        const timestamp = new Date().toISOString();
+
+                        // Obtener los parámetros de la URL
+                        const backURL = getParameterByName('backUrl');
+                        const aidValue = obtenerValorAid() ;
+
+                        // Mostrar los datos en un alert
+                        alert(`Datos obtenidos:
+                            \nLatitud: ${latitude}
+                            \nLongitud: ${longitude}
+                            \nTimestamp: ${timestamp}
+                            \nbackURL: ${backURL}
+                            \nID de cita: ${aidValue}`);
+
+                        
+                    },
+                    error => {
+                        console.error('Error obteniendo la ubicación:', error);
+                        alert('Error obteniendo la ubicación. Verifica los permisos de geolocalización.');
+                    }
+                );
+            } else {
+                alert('La geolocalización no está soportada en este navegador.');
+            }
+        }
     </script>
 </body>
 </html>
