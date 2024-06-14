@@ -7,21 +7,41 @@
 </head>
 <body>
     <h1>Obtener Coordenadas</h1>
-
     <button onclick="obtenerCoordenadas()">Obtener Coordenadas</button>
 
     <script>
-        function obtenerCoordenadas() {
-            fetch('https://plugintoacoordenada.netlify.app/.netlify/functions/obtenerCoordenadas')
-                .then(response => response.json())
-                .then(data => {
-                    alert(`Coordenadas obtenidas:\nLatitud: ${data.latitude}\nLongitud: ${data.longitude}`);
-                })
-                .catch(error => {
-                    console.error('Error obteniendo coordenadas:', error);
-                    alert('Error obteniendo coordenadas. Verifica que la API estÃ© disponible.');
-                });
-        }
+    function obtenerCoordenadas() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const { latitude, longitude } = position.coords;
+            //const tecnico_id = getParameterByName('tecnico_id');
+           // const orden_id = getParameterByName('orden_id');
+            const timestamp = new Date().toISOString();
+            const data = { latitude,
+                longitude, 
+                //tecnico_id,
+                //orden_id,
+                timestamp };
+
+            // Aquí puedes enviar los datos a tu API o manejarlos según necesites
+            console.log('Datos obtenidos:', data);
+            alert(`Coordenadas obtenidas:\nLatitud: ${latitude}\nLongitud: ${longitude}`);
+          },
+          error => {
+            console.error('Error obteniendo la ubicación:', error);
+            alert('Error obteniendo la ubicación. Verifica los permisos de geolocalización.');
+          }
+        );
+      } else {
+        alert('La geolocalización no está soportada en este navegador.');
+      }
+    }
+
+    function getParameterByName(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
     </script>
 </body>
 </html>
