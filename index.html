@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,16 +22,38 @@
                 timestamp
             };
 
-            const csvContent = `latitude,longitude,timestamp\n${latitude},${longitude},${timestamp}`;
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', 'coordenadas.csv');
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            // Obtener el backURL de los parámetros de la URL
+            const backURL = decodeURIComponent(getParameterByName('backUrl'));
+
+            if (!backURL) {
+              alert('No se encontró el backURL en los parámetros de la URL.');
+              return;
+            }
+
+            // Enviar los datos al backURL
+            fetch(backURL, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                // Agrega cualquier otro encabezado necesario aquí
+              },
+              body: JSON.stringify(data)
+            })
+            .then(response => {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error('Error en la respuesta de la API');
+              }
+            })
+            .then(responseData => {
+              console.log('Respuesta de Oracle Field Service:', responseData);
+              alert('Coordenadas enviadas exitosamente');
+            })
+            .catch(error => {
+              console.error('Error enviando coordenadas:', error);
+              alert('Error enviando coordenadas. Verifica los permisos y la configuración de la API.');
+            });
 
             console.log('Datos obtenidos:', data);
             alert(`Coordenadas obtenidas:\nLatitud: ${latitude}\nLongitud: ${longitude}`);
