@@ -10,60 +10,55 @@
     <button onclick="obtenerCoordenadas()">Obtener Coordenadas</button>
 
     <script>
-    function obtenerCoordenadas() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const { latitude, longitude } = position.coords;
-            const timestamp = new Date().toISOString();
-
-            // Obtener los par·metros de la URL
-            const backURL = decodeURIComponent(getParameterByName('backUrl'));
-            const aidValue = getParameterByName2(backURL, 'aid');
-            const nombre = getParameterByName('Usuario'); // Obtener nombre del usuario
-            const recursoPrincipalId = getParameterByName('Recurso principal'); // Obtener ID de recurso principal
-
-            // Mostrar los datos en un alert
-            alert(`Datos obtenidos:
-              \nLatitud: ${latitude}
-              \nLongitud: ${longitude}
-              \nTimestamp: ${timestamp}
-              \nTu nombre: ${nombre}
-              \nID recurso principal: ${recursoPrincipalId}
-              \nbackURL: ${backURL}
-              \nID de cita: ${aidValue}`);
-
-            console.log('Datos obtenidos:', {
-              latitude,
-              longitude,
-              timestamp,
-              nombre,
-              recursoPrincipalId,
-              aidValue,
-              backURL
-            });
-          },
-          error => {
-            console.error('Error obteniendo la ubicaciÛn:', error);
-            alert('Error obteniendo la ubicaciÛn. Verifica los permisos de geolocalizaciÛn.');
-          }
-        );
-      } else {
-        alert('La geolocalizaciÛn no est· soportada en este navegador.');
-      }
-    }
-
     function getParameterByName(name) {
         const url = new URL(window.location.href);
         return url.searchParams.get(name);
     }
 
-    function getParameterByName2(url, name) {
+    function getcitaid(url, name) {
         name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
         var results = regex.exec(url);
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
+
+    function obtenerCoordenadas() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const { latitude, longitude } = position.coords;
+                    const timestamp = new Date().toISOString();
+
+                    // Obtener los par√°metros de la URL
+                    const backURL = decodeURIComponent(getParameterByName('backUrl'));
+                    const aidValue = getcitaid(backURL, 'aid');
+
+                    // Mostrar los datos en un alert
+                    alert(`Datos obtenidos:
+                        \nLatitud: ${latitude}
+                        \nLongitud: ${longitude}
+                        \nTimestamp: ${timestamp}
+                        \nbackURL: ${backURL}
+                        \nID de cita: ${aidValue}`);
+
+                    console.log('Datos obtenidos:', {
+                        latitude,
+                        longitude,
+                        timestamp,
+                        aidValue,
+                        backURL
+                    });
+                },
+                error => {
+                    console.error('Error obteniendo la ubicaci√≥n:', error);
+                    alert('Error obteniendo la ubicaci√≥n. Verifica los permisos de geolocalizaci√≥n.');
+                }
+            );
+        } else {
+            alert('La geolocalizaci√≥n no est√° soportada en este navegador.');
+        }
+    }
     </script>
 </body>
 </html>
+
