@@ -10,26 +10,6 @@
     <button onclick="obtenerCoordenadas()">Obtener Coordenadas</button>
 
     <script>
-        function obtenerValorAid() {
-            const backUrl = decodeURIComponent(getParameterByName('aid'));
-            const aidValue = getAidFromUrl(backUrl);
-           // alert(`Valor de aid obtenido: ${aidValue}`);
-            console.log('Valor de aid:', aidValue);
-            return(aidValue)
-        }
-
-        function getAidFromUrl(url) {
-            const urlParams = new URLSearchParams(url.split('?')[1]); // Divide la URL y toma solo los parámetros de consulta
-            return urlParams.get('aid');
-        }
-
-
-        function getParameterByName(name) {
-            const url = new URL(window.location.href);
-            console.log(url)
-            return url.searchParams.get(name);
-        }
-
         function obtenerCoordenadas() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
@@ -37,19 +17,32 @@
                         const { latitude, longitude } = position.coords;
                         const timestamp = new Date().toISOString();
 
-                        // Obtener los parámetros de la URL
                         const backURL = getParameterByName('backUrl');
                         const aidValue = getParameterByName('aid');
 
+                        // Datos a guardar
+                        const data = {
+                            latitude,
+                            longitude,
+                            timestamp,
+                            backURL,
+                            aidValue
+                        };
+
+                        // Convertir los datos a CSV
+                        const csvContent = convertToCSV(data);
+
+                        // Descargar el archivo CSV
+                        downloadCSV(csvContent, 'coordenadas.csv');
+
                         // Mostrar los datos en un alert
                         alert(`Datos obtenidos:
-                            \nLatitud: ${latitude}
-                            \nLongitud: ${longitude}
-                            \nTimestamp: ${timestamp}
-                            \nbackURL: ${backURL}
-                            \nID de cita: ${aidValue}`);
+                                \nLatitud: ${latitude}
+                                \nLongitud: ${longitude}
+                                \nTimestamp: ${timestamp}
+                                \nbackURL: ${backURL}
+                                \nID de cita: ${aidValue}`);
 
-                        
                     },
                     error => {
                         console.error('Error obteniendo la ubicación:', error);
@@ -60,7 +53,29 @@
                 alert('La geolocalización no está soportada en este navegador.');
             }
         }
+
+        function getParameterByName(name) {
+            const url = new URL(window.location.href);
+            return url.searchParams.get(name);
+        }
+
+        function convertToCSV(data) {
+            const header = Object.keys(data).join(',') + '\n';
+            const values = Object.values(data).join(',') + '\n';
+            return header + values;
+        }
+
+        function downloadCSV(csvContent, filename) {
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
     </script>
 </body>
 </html>
-
