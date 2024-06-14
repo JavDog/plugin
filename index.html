@@ -30,7 +30,7 @@
                     const timestamp = new Date().toISOString();
 
                     // Obtener los parámetros de la URL
-                    const backURL = decodeURIComponent(getParameterByName('backUrl'));
+                    const backURL = (getParameterByName('backUrl'));
                     const aidValue = getcitaid(getParameterByName('backUrl'), 'aid');
 
                     // Mostrar los datos en un alert
