@@ -16,23 +16,32 @@
           position => {
             const { latitude, longitude } = position.coords;
             const timestamp = new Date().toISOString();
-           // const nombre = getParameterByName('Usuario');
-           // const recursoPrincipalId = getParameterByName('Recurso principal');
+
+            // Obtener los parámetros de la URL
             const backURL = decodeURIComponent(getParameterByName('backUrl'));
-            const aidValue = getParameterByName2(backURL, 'aid');// Obtener el valor de 'aid'
-            // Crear el objeto de datos
-            const data = {
-                latitude,
-                longitude,
-                timestamp,
-                nombre,
-                recursoPrincipalId
-            };
+            const aidValue = getParameterByName2(backURL, 'aid');
+            const nombre = getParameterByName('Usuario'); // Obtener nombre del usuario
+            const recursoPrincipalId = getParameterByName('Recurso principal'); // Obtener ID de recurso principal
 
             // Mostrar los datos en un alert
-            alert(`Datos obtenidos:\nLatitud: ${latitude}\nLongitud: ${longitude}\nTimestamp: ${timestamp}\nTu nombre: ${nombre}\nID recurso principal: ${recursoPrincipalId}\nbackURL: ${backURL}`);
+            alert(`Datos obtenidos:
+              \nLatitud: ${latitude}
+              \nLongitud: ${longitude}
+              \nTimestamp: ${timestamp}
+              \nTu nombre: ${nombre}
+              \nID recurso principal: ${recursoPrincipalId}
+              \nbackURL: ${backURL}
+              \nID de cita: ${aidValue}`);
 
-            console.log('Datos obtenidos:', data);
+            console.log('Datos obtenidos:', {
+              latitude,
+              longitude,
+              timestamp,
+              nombre,
+              recursoPrincipalId,
+              aidValue,
+              backURL
+            });
           },
           error => {
             console.error('Error obteniendo la ubicación:', error);
@@ -43,16 +52,17 @@
         alert('La geolocalización no está soportada en este navegador.');
       }
     }
-   
+
     function getParameterByName(name) {
         const url = new URL(window.location.href);
         return url.searchParams.get(name);
     }
+
     function getParameterByName2(url, name) {
         name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
         var results = regex.exec(url);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' ')); 
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
     </script>
 </body>
