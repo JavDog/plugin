@@ -31,7 +31,7 @@
 
                     // Obtener los parámetros de la URL
                     const backURL = decodeURIComponent(getParameterByName('backUrl'));
-                    const aidValue = getcitaid(backURL, 'aid');
+                    const aidValue = getcitaid(getParameterByName('backUrl'), 'aid');
 
                     // Mostrar los datos en un alert
                     alert(`Datos obtenidos:
