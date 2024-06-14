@@ -16,47 +16,23 @@
           position => {
             const { latitude, longitude } = position.coords;
             const timestamp = new Date().toISOString();
+            const nombre = getParameterByName('Usuario');
+            const recursoPrincipalId = getParameterByName('Recurso principal');
+            const backURL = decodeURIComponent(getParameterByName('backUrl'));
+
+            // Crear el objeto de datos
             const data = {
                 latitude,
                 longitude,
-                timestamp
+                timestamp,
+                nombre,
+                recursoPrincipalId
             };
 
-            // Obtener el backURL de los parámetros de la URL
-            const backURL = decodeURIComponent(getParameterByName('backUrl'));
-
-            if (!backURL) {
-              alert('No se encontró el backURL en los parámetros de la URL.');
-              return;
-            }
-
-            // Enviar los datos al backURL
-            fetch(backURL, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                // Agrega cualquier otro encabezado necesario aquí
-              },
-              body: JSON.stringify(data)
-            })
-            .then(response => {
-              if (response.ok) {
-                return response.json();
-              } else {
-                throw new Error('Error en la respuesta de la API');
-              }
-            })
-            .then(responseData => {
-              console.log('Respuesta de Oracle Field Service:', responseData);
-              alert('Coordenadas enviadas exitosamente');
-            })
-            .catch(error => {
-              console.error('Error enviando coordenadas:', error);
-              alert('Error enviando coordenadas. Verifica los permisos y la configuración de la API.');
-            });
+            // Mostrar los datos en un alert
+            alert(`Datos obtenidos:\nLatitud: ${latitude}\nLongitud: ${longitude}\nTimestamp: ${timestamp}\nTu nombre: ${nombre}\nID recurso principal: ${recursoPrincipalId}\nbackURL: ${backURL}`);
 
             console.log('Datos obtenidos:', data);
-            alert(`Coordenadas obtenidas:\nLatitud: ${latitude}\nLongitud: ${longitude}`);
           },
           error => {
             console.error('Error obteniendo la ubicación:', error);
